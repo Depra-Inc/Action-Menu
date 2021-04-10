@@ -1,4 +1,4 @@
-namespace FD.UI.Menu.Background
+namespace FD.UI.Menues.Background
 {
     public enum BackgroundType
     {

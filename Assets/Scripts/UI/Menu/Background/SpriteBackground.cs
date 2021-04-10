@@ -1,22 +1,33 @@
 using UnityEngine;
 
-namespace FD.UI.Menu.Background
+namespace FD.UI.Menues.Background
 {
-    public class SpriteBackground : MonoBehaviour, IBackground
+    internal class SpriteBackground : MonoBehaviour, IBackground
     {
-        [SerializeField] BackgroundType type = default;
+        [SerializeField] bool disableLight = true;
 
-        public BackgroundType Type => type;
+        public BackgroundType Type => BackgroundType.Sprite;
         public bool IsActive { get; private set; }
+
+        private Light[] lightSources;
 
         private void Awake()
         {
+            if (disableLight)
+                lightSources = FindObjectsOfType<Light>();
+
             Disable();
         }
 
-        public void Enable() => Toggle(true);
+        public void Enable()
+        {
+            Toggle(true);
+        }
 
-        public void Disable() => Toggle(false);
+        public void Disable()
+        {
+            Toggle(false);
+        }
 
         private void Toggle(bool flag)
         {
@@ -26,7 +37,14 @@ namespace FD.UI.Menu.Background
                 childObject.gameObject.SetActive(flag);
             }
 
+            IsActive = flag;
             gameObject.SetActive(flag);
+
+            if (disableLight == false)
+                return;
+
+            for (var i = 0; i < lightSources.Length; i++)
+                lightSources[i].gameObject.SetActive(true);
         }
     }
 }

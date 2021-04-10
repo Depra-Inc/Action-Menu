@@ -1,9 +1,9 @@
 using System;
 using UnityEngine;
 
-namespace FD.UI.Menu.Background
+namespace FD.UI.Menues.Background
 {
-    public class BackgroundController : MonoBehaviour
+    internal class BackgroundController : MonoBehaviour
     {
         [SerializeField] BackgroundType defaultType = BackgroundType.Sprite;
 
@@ -12,6 +12,7 @@ namespace FD.UI.Menu.Background
         public Action OnBackgroundChanged { get; set; }
 
         private IBackground[] backgrounds = null;
+        private int lastIndex;
 
         private void Awake()
         {
@@ -30,38 +31,59 @@ namespace FD.UI.Menu.Background
             OnBackgroundChanged -= () => Debug.Log($"[{nameof(BackgroundController)}]: Background changed");
         }
 
+        public void SetNext()
+        {
+            var newIndex = IncreaseIndex(lastIndex);
+            ChangeTo(newIndex);
+        }
+
         public bool ChangeTypeTo(BackgroundType newType)
         {
             var background = GetByType(newType);
-
             if (background == null)
                 return false;
 
-            if (ActiveBackground != null)
-                ActiveBackground.Disable();
-
-            background.Enable();
-
-            OnBackgroundChanged?.Invoke();
+            SetBackground(background);
 
             return true;
         }
 
+        private bool ChangeTo(int index)
+        {
+            if (index > backgrounds.Length || backgrounds[index] == null)
+                return false;
+
+            SetBackground(backgrounds[index]);
+            lastIndex = index;
+
+            return true;
+        }
+
+        private void SetBackground(IBackground background)
+        {
+            if (ActiveBackground != null)
+                ActiveBackground.Disable();
+
+            ActiveBackground = background;
+            ActiveBackground.Enable();
+
+            OnBackgroundChanged?.Invoke();
+        }
+
         private void Init()
         {
-            if (TryGetBackgroundsInChildrens() == false)
-            {
-                for (var i = 0; i < transform.childCount; i++)
-                {
-                    var child = transform.GetChild(i);
-                    Destroy(child.gameObject);
-                }
+            if (TryGetBackgroundsInChildrens())
+                return;
 
-                if (InstantiateBackgroundsFromResources() == false)
-                {
-                    Debug.Log($"[{nameof(BackgroundController)}]: No backgrounds available!");
-                    return;
-                }
+            for (var i = 0; i < transform.childCount; i++)
+            {
+                var child = transform.GetChild(i);
+                Destroy(child.gameObject);
+            }
+
+            if (InstantiateBackgroundsFromResources() == false)
+            {
+                Debug.Log($"[{nameof(BackgroundController)}]: No backgrounds available!");
             }
         }
 
@@ -86,6 +108,7 @@ namespace FD.UI.Menu.Background
             for (var i = 0; i < prefabs.Length; i++)
             {
                 backgrounds[i] = Instantiate(prefabs[i], transform) as IBackground;
+                (backgrounds[i] as UnityEngine.Object).name = backgrounds[i].GetType().Name;
             }
 
             return true;
@@ -95,11 +118,13 @@ namespace FD.UI.Menu.Background
         {
             IBackground result = null;
 
-            for (var i = 0; i < backgrounds.Length; i++)
+            for (var index = 0; index < backgrounds.Length; index++)
             {
-                if (backgrounds[i].Type == type)
+                if (backgrounds[index].Type == type)
                 {
-                    result = backgrounds[i];
+                    result = backgrounds[index];
+                    lastIndex = index;
+
                     break;
                 }
             }
@@ -107,5 +132,14 @@ namespace FD.UI.Menu.Background
             return result;
         }
 
+        private int IncreaseIndex(int index)
+        {
+            index++;
+
+            if (index >= backgrounds.Length)
+                index = 0;
+
+            return index;
+        }
     }
 }
