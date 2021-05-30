@@ -1,10 +1,11 @@
-﻿using FD.Input;
-using FD.UI.Menues;
-using System.Linq;
+﻿using System.Linq;
 using UnityEngine;
 
 namespace FD.UI.TabSystem
 {
+    using Input;
+    using Menues;
+
     public class TabGroup : MonoBehaviour
     {
         [SerializeField] TabButton[] tabButtons = null;
@@ -16,10 +17,18 @@ namespace FD.UI.TabSystem
         [SerializeField] bool isUsingKeyboard = false;
         [SerializeField] bool isCanBeInactive = false;
 
+        public Color TabIdleColor => tabIdleColor;
+        public Color TabActiveColor => tabActiveColor;
+
         private TabButton activeTab;
+
+        private MenuController menuController;
 
         private void Awake()
         {
+            menuController = FindObjectOfType<MenuController>();
+            menuController.MenuClosed += OnMenuClosed;
+
             for (var i = 0; i < tabButtons.Length; i++)
             {
                 tabButtons[i].Init(this, i);
@@ -52,8 +61,11 @@ namespace FD.UI.TabSystem
 
         public void OnTabSelected(TabButton button)
         {
-            if (activeTab != null)
+            if (activeTab)
                 activeTab.Deselect();
+
+            if (button == null)
+                return;
 
             int index = button.Index;
 
@@ -68,8 +80,6 @@ namespace FD.UI.TabSystem
             {
                 activeTab = button;
                 activeTab.Select();
-
-                button.SetColor(tabActiveColor);
 
                 for (int i = 0; i < menuesToSwap.Length; i++)
                 {
@@ -118,8 +128,22 @@ namespace FD.UI.TabSystem
         {
             foreach (var button in tabButtons.Where(button => activeTab == null || button != activeTab))
             {
-                button.SetColor(tabIdleColor);
+                button.Deselect();
             }
+        }
+
+        private void OnMenuClosed(Menu menu)
+        {
+            if (activeTab == null)
+                return;
+
+            var closedMenu = menuesToSwap[activeTab.Index];
+
+            if (menu != closedMenu)
+                return;
+
+            activeTab.Deselect();
+            activeTab = null;
         }
     }
 }

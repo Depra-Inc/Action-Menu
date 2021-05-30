@@ -535,7 +535,6 @@ GameObject:
   - component: {fileID: 1221897768590382605}
   - component: {fileID: 1221897768590382602}
   - component: {fileID: 1221897768590382603}
-  - component: {fileID: 1221897768590382600}
   m_Layer: 5
   m_Name: CancelButton
   m_TagString: Untagged
@@ -657,53 +656,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &1221897768590382600
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1221897768590382614}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa89a8f552382c945bd323ce882f3375, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0.4990768
-      outSlope: 0.4990768
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.016666668
-    - serializedVersion: 3
-      time: 0.24255759
-      value: 1.0176821
-      inSlope: -0.11217522
-      outSlope: -0.11217522
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.12391935
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: -0.015876211
-      outSlope: -0.015876211
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.24166667
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  speed: 1
-  target: {fileID: 1221897768590382601}
 --- !u!1 &1221897768807303086
 GameObject:
   m_ObjectHideFlags: 0
@@ -716,7 +668,6 @@ GameObject:
   - component: {fileID: 1221897768807303077}
   - component: {fileID: 1221897768807303074}
   - component: {fileID: 1221897768807303075}
-  - component: {fileID: 1221897768807303072}
   m_Layer: 5
   m_Name: ConfirmButton
   m_TagString: Untagged
@@ -838,50 +789,3 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &1221897768807303072
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1221897768807303086}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa89a8f552382c945bd323ce882f3375, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0.4990768
-      outSlope: 0.4990768
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.016666668
-    - serializedVersion: 3
-      time: 0.24255759
-      value: 1.0176821
-      inSlope: -0.11217522
-      outSlope: -0.11217522
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.12391935
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: -0.015876211
-      outSlope: -0.015876211
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.24166667
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  speed: 1
-  target: {fileID: 1221897768807303073}

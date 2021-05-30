@@ -17,19 +17,27 @@ namespace FD.Input
         }
         private static Controls controls;
 
-        private void Awake()
-        {
-            if (controls != null) 
-                return;
-
-            controls = new Controls();
-        }
-
         private static readonly IDictionary<string, int> mapStates = new Dictionary<string, int>();
 
-        private void OnEnable() => Controls.Enable();
-        private void OnDisable() => Controls.Disable();
-        private void OnDestroy() => controls.Dispose();
+        private void Awake()
+        {
+            DontDestroyOnLoad(gameObject);
+        }
+
+        public void OnEnable()
+        {
+            Controls.Enable();
+        }
+
+        public void OnDisable()
+        {
+            Controls.Disable();
+        }
+
+        public void OnDestroy()
+        {
+            controls.Dispose();
+        }
 
         public static void Add(string mapName)
         {

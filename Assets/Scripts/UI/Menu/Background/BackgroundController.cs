@@ -3,13 +3,15 @@ using UnityEngine;
 
 namespace FD.UI.Menues.Background
 {
+    [AddComponentMenu("FD/UI/Menu/Background Controller")]
+    [DisallowMultipleComponent]
     internal class BackgroundController : MonoBehaviour
     {
         [SerializeField] BackgroundType defaultType = BackgroundType.Sprite;
 
         public IBackground ActiveBackground { get; private set; }
 
-        public Action OnBackgroundChanged { get; set; }
+        public Action BackgroundChanged { get; set; }
 
         private IBackground[] backgrounds = null;
         private int lastIndex;
@@ -17,18 +19,17 @@ namespace FD.UI.Menues.Background
         private void Awake()
         {
             Init();
-
             ChangeTypeTo(defaultType);
         }
 
         private void OnEnable()
         {
-            OnBackgroundChanged += () => Debug.Log($"[{nameof(BackgroundController)}]: Background changed");
+            BackgroundChanged += OnBackgroundChanged;
         }
 
         private void OnDisable()
         {
-            OnBackgroundChanged -= () => Debug.Log($"[{nameof(BackgroundController)}]: Background changed");
+            BackgroundChanged -= OnBackgroundChanged;
         }
 
         public void SetNext()
@@ -67,7 +68,7 @@ namespace FD.UI.Menues.Background
             ActiveBackground = background;
             ActiveBackground.Enable();
 
-            OnBackgroundChanged?.Invoke();
+            BackgroundChanged?.Invoke();
         }
 
         private void Init()
@@ -90,7 +91,6 @@ namespace FD.UI.Menues.Background
         private bool TryGetBackgroundsInChildrens()
         {
             backgrounds = GetComponentsInChildren<IBackground>(true);
-
             if (backgrounds == null || backgrounds.Length == 0)
                 return false;
 
@@ -140,6 +140,11 @@ namespace FD.UI.Menues.Background
                 index = 0;
 
             return index;
+        }
+
+        private void OnBackgroundChanged()
+        {
+            Debug.Log($"[{nameof(BackgroundController)}]: Background changed");
         }
     }
 }

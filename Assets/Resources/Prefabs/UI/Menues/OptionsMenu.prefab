@@ -158,7 +158,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7687888926156942180}
   - component: {fileID: 7687888926156942187}
-  - component: {fileID: 7687888926156942183}
   - component: {fileID: 7687888926156942184}
   - component: {fileID: 7687888926156942185}
   - component: {fileID: 7687888926156942182}
@@ -213,53 +212,6 @@ MonoBehaviour:
   onTabDeselected:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &7687888926156942183
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7687888926156942181}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa89a8f552382c945bd323ce882f3375, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0.4990768
-      outSlope: 0.4990768
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.016666668
-    - serializedVersion: 3
-      time: 0.24255759
-      value: 1.0176821
-      inSlope: -0.11217522
-      outSlope: -0.11217522
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.12391935
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: -0.015876211
-      outSlope: -0.015876211
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.24166667
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  speed: 1
-  target: {fileID: 7687888926156942180}
 --- !u!222 &7687888926156942184
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -934,7 +886,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7687888927367387855}
   - component: {fileID: 7687888927367387890}
-  - component: {fileID: 7687888927367387854}
   - component: {fileID: 7687888927367387891}
   - component: {fileID: 7687888927367387888}
   - component: {fileID: 7687888927367387889}
@@ -989,53 +940,6 @@ MonoBehaviour:
   onTabDeselected:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &7687888927367387854
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7687888927367387852}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa89a8f552382c945bd323ce882f3375, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0.4990768
-      outSlope: 0.4990768
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.016666668
-    - serializedVersion: 3
-      time: 0.24255759
-      value: 1.0176821
-      inSlope: -0.11217522
-      outSlope: -0.11217522
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.12391935
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: -0.015876211
-      outSlope: -0.015876211
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.24166667
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  speed: 1
-  target: {fileID: 7687888927367387855}
 --- !u!222 &7687888927367387891
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1128,7 +1032,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7687888927513582630}
   - component: {fileID: 7687888927513582637}
-  - component: {fileID: 7687888927513582633}
   - component: {fileID: 7687888927513582634}
   - component: {fileID: 7687888927513582635}
   - component: {fileID: 7687888927513582632}
@@ -1183,53 +1086,6 @@ MonoBehaviour:
   onTabDeselected:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &7687888927513582633
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7687888927513582631}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa89a8f552382c945bd323ce882f3375, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0.4990768
-      outSlope: 0.4990768
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.016666668
-    - serializedVersion: 3
-      time: 0.24255759
-      value: 1.0176821
-      inSlope: -0.11217522
-      outSlope: -0.11217522
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.12391935
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: -0.015876211
-      outSlope: -0.015876211
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.24166667
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  speed: 1
-  target: {fileID: 7687888927513582630}
 --- !u!222 &7687888927513582634
 CanvasRenderer:
   m_ObjectHideFlags: 0

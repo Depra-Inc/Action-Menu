@@ -1,5 +1,12 @@
 {
   "dependencies": {
+    "com.fd.common": {
+      "version": "https://github.com/Depression-aggression/FD-Common.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "950e7deb204fc890604c11131a2f3f056e87092a"
+    },
     "com.unity.ext.nunit": {
       "version": "1.0.6",
       "depth": 1,

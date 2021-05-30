@@ -1,30 +1,43 @@
-using FD.Input;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace FD.UI.Menues
 {
+    using Input;
+
+    [AddComponentMenu("FD/UI/Menu/Menu Controller")]
+    [DisallowMultipleComponent]
     internal class MenuController : MonoBehaviour, IMenuController
     {
         [SerializeField] Transform menuesRoot = null;
 
-        public Menu[] Menues { get; private set; }
+        public Menu[] Menues => menues.Values.ToArray();
 
-        public Action OnGameStarted { get; set; }
-        public Action OnGameEnded { get; set; }
+        public Action GameStarted { get; set; }
+        public Action GameEnded { get; set; }
+        public Action<Menu> MenuOpened { get; set; }
+        public Action<Menu> MenuClosed { get; set; }
 
         private Stack<Menu> menuStack = new Stack<Menu>();
-
-        private Dictionary<MenuType, Menu> menues = new Dictionary<MenuType, Menu>();
+        private Dictionary<int, Menu> menues = new Dictionary<int, Menu>();
 
         private void Awake()
         {
             InputManager.Add(ActionMapNames.UI);
+            InputManager.Controls.UI.Enable();
 
             InitMenues();
-
             OpenMenu(MenuType.Main);
+
+            MenuOpened += OnMenuOpened;
+            MenuClosed += OnMenuClosed;
+        }
+
+        private void OnDestroy()
+        {
+            InputManager.Remove(ActionMapNames.UI);
         }
 
         private void OnEnable()
@@ -39,45 +52,52 @@ namespace FD.UI.Menues
 
         public void OpenMenu(MenuType type)
         {
-            var menu = GetMenuByType(type);
+            OpenMenu(GetMenu(type));
+        }
+
+        public void OpenMenu(Menu menu)
+        {
             if (menu == null)
                 return;
 
             menu.Open();
+        }
 
+        public void OnMenuOpened(Menu menu)
+        {
             menuStack.Push(menu);
         }
 
-        public void ToggleMenu(MenuType type)
+        public void OnMenuClosed(Menu menu)
         {
-            var menu = GetMenuByType(type);
+            if (menuStack.Count == 0)
+                return;
+
+            menuStack.Pop();
+        }
+
+        public void ToggleMenu(Menu menu)
+        {
             if (menu == null)
                 return;
 
             menu.Toggle();
-
-            if (menu.isActiveAndEnabled)
-                menuStack.Push(menu);
-            else
-                menuStack.Pop();
         }
 
         public void CloseLastMenu()
         {
-            var lastMenu = menuStack.Pop();
-
-            if (lastMenu.Type == MenuType.Main)
-            {
-                OpenMenu(MenuType.Exit);
+            if (menuStack.Count == 0)
                 return;
-            }
+
+            var lastMenu = menuStack.Peek();
+            if (lastMenu is MainMenu)
+                return;
 
             lastMenu.Close();
         }
 
-        public void CloseMenu(MenuType type)
+        public void CloseMenu(Menu menu)
         {
-            var menu = GetMenuByType(type);
             if (menu == null)
                 return;
 
@@ -88,10 +108,14 @@ namespace FD.UI.Menues
                 menuStack.Pop();
         }
 
-        private Menu GetMenuByType(MenuType type)
+        private Menu GetMenu(MenuType type)
         {
-            if (menues.TryGetValue(type, out Menu result))
-                return result;
+            var index = (int)type;
+            if (menues.ContainsKey(index))
+            {
+                if (menues.TryGetValue(index, out Menu result))
+                    return result;
+            }
 
             Debug.Log($"[{nameof(MenuController)}]: {type} Menu not found!");
 
@@ -128,7 +152,7 @@ namespace FD.UI.Menues
                 menu.name = menu.GetType().Name;
                 menu.Init(this);
 
-                menues.Add(menu.Type, menu);
+                menues.Add((int)menu.Type, menu);
             }
         }
 
@@ -147,7 +171,7 @@ namespace FD.UI.Menues
                 menu.gameObject.SetActive(false);
                 menu.Init(this);
 
-                menues.Add(menu.Type, menu);
+                menues.Add((int)menu.Type, menu);
             }
 
             return true;

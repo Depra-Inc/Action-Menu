@@ -32,11 +32,6 @@ namespace FD.UI.TabSystem
             Index = index;
         }
 
-        public void SetColor(Color color)
-        {
-            background.color = color;
-        }
-
         public void OnPointerEnter(PointerEventData eventData)
         {
             onTabEnter.Invoke();
@@ -55,14 +50,23 @@ namespace FD.UI.TabSystem
 
         public void Select()
         {
+            SetColor(tabGroup.TabActiveColor);
             isSelected = true;
+
             onTabSelected.Invoke();
         }
 
         public void Deselect()
         {
+            SetColor(tabGroup.TabIdleColor);
             isSelected = false;
+
             onTabDeselected.Invoke();
+        }
+
+        private void SetColor(Color color)
+        {
+            background.color = color;
         }
     }
 }

@@ -6,12 +6,9 @@ namespace FD.UI.Menues
     {
         Menu[] Menues { get; }
 
-        Action OnGameStarted { get; set; }
-        Action OnGameEnded { get; set; }
-
-        void OpenMenu(MenuType type);
-        void ToggleMenu(MenuType type);
-        void CloseMenu(MenuType type);
-        void CloseLastMenu();
+        Action GameStarted { get; set; }
+        Action GameEnded { get; set; }
+        Action<Menu> MenuOpened { get; set; }
+        Action<Menu> MenuClosed { get; set; }
     }
 }

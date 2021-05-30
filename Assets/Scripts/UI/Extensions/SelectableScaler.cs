@@ -6,7 +6,7 @@ using UnityEngine.UI;
 namespace FD.UI.Extensions
 {
     [AddComponentMenu("UI/Extensions/Selectable Scaler")]
-    [RequireComponent(typeof(UnityEngine.UI.Button))]
+    [RequireComponent(typeof(Button))]
     [DisallowMultipleComponent]
     public class SelectableScaler : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
@@ -29,7 +29,6 @@ namespace FD.UI.Extensions
 
         private Vector3 initScale;
 
-        // Use this for initialization
         private void Awake()
         {
             if (target == null)
