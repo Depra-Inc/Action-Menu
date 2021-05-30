@@ -94,6 +94,10 @@ namespace FD.UI.Menues
                 return;
 
             lastMenu.Close();
+
+            var parentMenu = lastMenu.GetComponentInParent<Menu>();
+            if (parentMenu)
+                parentMenu.Close();
         }
 
         public void CloseMenu(Menu menu)

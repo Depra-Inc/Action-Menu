@@ -15,16 +15,21 @@ namespace FD.UI.TabSystem
         [SerializeField] UnityEvent onTabDeselected = null;
 
         public int Index { get; private set; }
+        public Image Background
+        {
+            get
+            {
+                if (background == null)
+                    background = GetComponent<Image>();
+
+                return background;
+            }
+        }
 
         private Image background = null;
         private bool isSelected = false;
 
         private TabGroup tabGroup;
-
-        private void Awake()
-        {
-            background = GetComponent<Image>();
-        }
 
         public void Init(TabGroup tabGroup, int index)
         {
@@ -66,7 +71,7 @@ namespace FD.UI.TabSystem
 
         private void SetColor(Color color)
         {
-            background.color = color;
+            Background.color = color;
         }
     }
 }

@@ -21,6 +21,7 @@ namespace FD.UI.TabSystem
         public Color TabActiveColor => tabActiveColor;
 
         private TabButton activeTab;
+        private TabButton lastSelectedTab;
 
         private MenuController menuController;
 
@@ -45,6 +46,14 @@ namespace FD.UI.TabSystem
         {
             if (isUsingKeyboard == false)
                 return;
+
+            if (isCanBeInactive == false && activeTab == null)
+            {
+                if (lastSelectedTab)
+                    OnTabSelected(lastSelectedTab);
+                else
+                    ShowNextTab();
+            }
 
             InputManager.Controls.UI.PreviousTab.performed += context => ShowPreviousTab();
             InputManager.Controls.UI.NextTab.performed += context => ShowNextTab();
@@ -80,6 +89,7 @@ namespace FD.UI.TabSystem
             {
                 activeTab = button;
                 activeTab.Select();
+                lastSelectedTab = activeTab;
 
                 for (int i = 0; i < menuesToSwap.Length; i++)
                 {
