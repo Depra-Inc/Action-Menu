@@ -9,7 +9,7 @@ namespace FD.UI
     [DisallowMultipleComponent]
     public class HighlightedText : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
-        [SerializeField] Color _accentColor = Color.red;
+        [SerializeField] Color _accentColor = Color.white;
 
         private Color _defaultTextColor;
         private TMP_Text _textComponent;

@@ -35,6 +35,8 @@ namespace FD.UI.TabSystem
         {
             _tabGroup = tabGroup;
             Index = index;
+
+            Background.color = _tabGroup.TabIdleColor;
         }
 
         public void OnPointerEnter(PointerEventData eventData)
