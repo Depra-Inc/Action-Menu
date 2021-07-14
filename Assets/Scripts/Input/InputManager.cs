@@ -9,15 +9,15 @@ namespace FD.Input
         {
             get
             {
-                if (controls != null)
-                    return controls;
+                if (_controls != null)
+                    return _controls;
 
-                return controls = new Controls();
+                return _controls = new Controls();
             }
         }
-        private static Controls controls;
+        private static Controls _controls;
 
-        private static readonly IDictionary<string, int> mapStates = new Dictionary<string, int>();
+        private static readonly IDictionary<string, int> MapStates = new Dictionary<string, int>();
 
         private void Awake()
         {
@@ -36,28 +36,28 @@ namespace FD.Input
 
         public void OnDestroy()
         {
-            controls.Dispose();
+            _controls.Dispose();
         }
 
         public static void Add(string mapName)
         {
-            mapStates.TryGetValue(mapName, out int value);
-            mapStates[mapName] = value + 1;
+            MapStates.TryGetValue(mapName, out int value);
+            MapStates[mapName] = value + 1;
 
             UpdateMapState(mapName);
         }
 
         public static void Remove(string mapName)
         {
-            mapStates.TryGetValue(mapName, out int value);
-            mapStates[mapName] = Mathf.Max(value - 1, 0);
+            MapStates.TryGetValue(mapName, out int value);
+            MapStates[mapName] = Mathf.Max(value - 1, 0);
 
             UpdateMapState(mapName);
         }
 
         private static void UpdateMapState(string mapName)
         {
-            int value = mapStates[mapName];
+            int value = MapStates[mapName];
 
             if (value > 0)
             {

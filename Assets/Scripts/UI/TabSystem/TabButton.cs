@@ -9,64 +9,64 @@ namespace FD.UI.TabSystem
     [DisallowMultipleComponent]
     public class TabButton : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
     {
-        [SerializeField] UnityEvent onTabEnter = null;
-        [SerializeField] UnityEvent onTabExit = null;
-        [SerializeField] UnityEvent onTabSelected = null;
-        [SerializeField] UnityEvent onTabDeselected = null;
+        [SerializeField] private UnityEvent _onTabEnter = null;
+        [SerializeField] private UnityEvent _onTabExit = null;
+        [SerializeField] private UnityEvent _onTabSelected = null;
+        [SerializeField] private UnityEvent _onTabDeselected = null;
 
         public int Index { get; private set; }
         public Image Background
         {
             get
             {
-                if (background == null)
-                    background = GetComponent<Image>();
+                if (_background == null)
+                    _background = GetComponent<Image>();
 
-                return background;
+                return _background;
             }
         }
 
-        private Image background = null;
-        private bool isSelected = false;
+        private Image _background = null;
+        private bool _isSelected = false;
 
-        private TabGroup tabGroup;
+        private TabGroup _tabGroup;
 
         public void Init(TabGroup tabGroup, int index)
         {
-            this.tabGroup = tabGroup;
+            _tabGroup = tabGroup;
             Index = index;
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            onTabEnter.Invoke();
+            _onTabEnter.Invoke();
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            if (isSelected == false)
-                onTabExit.Invoke();
+            if (_isSelected == false)
+                _onTabExit.Invoke();
         }
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            tabGroup.OnTabSelected(this);
+            _tabGroup.OnTabSelected(this);
         }
 
         public void Select()
         {
-            SetColor(tabGroup.TabActiveColor);
-            isSelected = true;
+            SetColor(_tabGroup.TabActiveColor);
+            _isSelected = true;
 
-            onTabSelected.Invoke();
+            _onTabSelected.Invoke();
         }
 
         public void Deselect()
         {
-            SetColor(tabGroup.TabIdleColor);
-            isSelected = false;
+            SetColor(_tabGroup.TabIdleColor);
+            _isSelected = false;
 
-            onTabDeselected.Invoke();
+            _onTabDeselected.Invoke();
         }
 
         private void SetColor(Color color)

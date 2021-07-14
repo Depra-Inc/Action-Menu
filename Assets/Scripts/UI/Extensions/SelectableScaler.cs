@@ -10,36 +10,36 @@ namespace FD.UI.Extensions
     [DisallowMultipleComponent]
     public class SelectableScaler : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
-        [SerializeField] AnimationCurve animCurve;
+        [SerializeField] private AnimationCurve _animCurve;
         [Tooltip("Animation speed multiplier")]
-        [SerializeField] float speed = 1;
-        [SerializeField] Transform target;
+        [SerializeField] private float _speed = 1;
+        [SerializeField] private Transform _target;
 
         public Selectable Target
         {
             get
             {
-                if (selectable == null)
-                    selectable = GetComponent<Selectable>();
+                if (_selectable == null)
+                    _selectable = GetComponent<Selectable>();
 
-                return selectable;
+                return _selectable;
             }
         }
-        private Selectable selectable;
+        private Selectable _selectable;
 
-        private Vector3 initScale;
+        private Vector3 _initScale;
 
         private void Awake()
         {
-            if (target == null)
-                target = transform;
+            if (_target == null)
+                _target = transform;
 
-            initScale = target.localScale;
+            _initScale = _target.localScale;
         }
 
         private void OnEnable()
         {
-            target.localScale = initScale;
+            _target.localScale = _initScale;
         }
 
         public void OnPointerDown(PointerEventData eventData)
@@ -47,8 +47,8 @@ namespace FD.UI.Extensions
             if (Target != null && !Target.interactable)
                 return;
 
-            StopCoroutine(ScaleOUT());
-            StartCoroutine(ScaleIN());
+            StopCoroutine(ScaleOut());
+            StartCoroutine(ScaleIn());
         }
 
         public void OnPointerUp(PointerEventData eventData)
@@ -56,44 +56,44 @@ namespace FD.UI.Extensions
             if (Target != null && !Target.interactable)
                 return;
 
-            StopCoroutine(ScaleIN());
-            StartCoroutine(ScaleOUT());
+            StopCoroutine(ScaleIn());
+            StartCoroutine(ScaleOut());
         }
 
-        private IEnumerator ScaleIN()
+        private IEnumerator ScaleIn()
         {
-            if (animCurve.keys.Length > 0)
+            if (_animCurve.keys.Length > 0)
             {
-                target.localScale = initScale;
+                _target.localScale = _initScale;
                 float t = 0;
-                float maxT = animCurve.keys[animCurve.length - 1].time;
+                float maxT = _animCurve.keys[_animCurve.length - 1].time;
 
                 while (t < maxT)
                 {
-                    t += speed * Time.unscaledDeltaTime;
-                    target.localScale = Vector3.one * animCurve.Evaluate(t);
+                    t += _speed * Time.unscaledDeltaTime;
+                    _target.localScale = Vector3.one * _animCurve.Evaluate(t);
 
                     yield return null;
                 }
             }
         }
 
-        private IEnumerator ScaleOUT()
+        private IEnumerator ScaleOut()
         {
-            if (animCurve.keys.Length > 0)
+            if (_animCurve.keys.Length > 0)
             {
                 //target.localScale = initScale;
                 float t = 0;
-                float maxT = animCurve.keys[animCurve.length - 1].time;
+                float maxT = _animCurve.keys[_animCurve.length - 1].time;
 
                 while (t < maxT)
                 {
-                    t += speed * Time.unscaledDeltaTime;
-                    target.localScale = Vector3.one * animCurve.Evaluate(maxT - t);
+                    t += _speed * Time.unscaledDeltaTime;
+                    _target.localScale = Vector3.one * _animCurve.Evaluate(maxT - t);
                     yield return null;
                 }
 
-                transform.localScale = initScale;
+                transform.localScale = _initScale;
             }
         }
     }

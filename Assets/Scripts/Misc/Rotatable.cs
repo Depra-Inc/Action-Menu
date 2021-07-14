@@ -4,28 +4,28 @@ namespace FD.Misc
 {
     public class Rotatable : MonoBehaviour
     {
-        [SerializeField] float speed = 20f;
-        [SerializeField] float maxSpeed = 100f;
-        [SerializeField] float minSpeed = 1f;
-        [SerializeField] bool randomSpeed = false;
-        [SerializeField] bool randomDirection = false;
+        [SerializeField] private float _speed = 20f;
+        [SerializeField] private float _maxSpeed = 100f;
+        [SerializeField] private float _minSpeed = 1f;
+        [SerializeField] private bool _randomSpeed = false;
+        [SerializeField] private bool _randomDirection = false;
 
-        private Vector3 direction;
+        private Vector3 _direction;
 
         private void Awake()
         {
-            if (randomDirection)
-                direction = GetRandomDirection();
+            if (_randomDirection)
+                _direction = GetRandomDirection();
             else
-                direction = Vector3.up;
+                _direction = Vector3.up;
 
-            if (randomSpeed)
-                speed = Random.Range(minSpeed, maxSpeed);
+            if (_randomSpeed)
+                _speed = Random.Range(_minSpeed, _maxSpeed);
         }
 
         private void FixedUpdate()
         {
-            transform.Rotate(direction * speed * Time.fixedDeltaTime);
+            transform.Rotate(_direction * _speed * Time.fixedDeltaTime);
         }
 
         private Vector3 GetRandomDirection()

@@ -1,16 +1,15 @@
 using UnityEngine;
 
-namespace FD.UI.Menues
+namespace FD.UI.Panels
 {
-    internal abstract class Menu : MonoBehaviour, IElementUI
+    public abstract class Panel : MonoBehaviour, IElementUI
     {
-        public abstract MenuType Type { get; }
+        protected IPanelController Controller { get; private set; }
 
-        protected IMenuController Controller { get; private set; }
-
-        public virtual void Init(IMenuController controller)
+        public void Init(IPanelController controller)
         {
             Controller = controller;
+            OnInitialized();
         }
 
         public void Open()
@@ -20,7 +19,7 @@ namespace FD.UI.Menues
 
             gameObject.SetActive(true);
 
-            Controller.MenuOpened?.Invoke(this);
+            Controller.PanelOpened?.Invoke(this);
         }
 
         public void Close()
@@ -30,7 +29,7 @@ namespace FD.UI.Menues
 
             gameObject.SetActive(false);
 
-            Controller.MenuClosed?.Invoke(this);
+            Controller.PanelClosed?.Invoke(this);
         }
 
         public void Toggle()
@@ -39,6 +38,10 @@ namespace FD.UI.Menues
                 Close();
             else
                 Open();
+        }
+        
+        protected virtual void OnInitialized()
+        {
         }
     }
 }

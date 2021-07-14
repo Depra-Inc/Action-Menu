@@ -50,7 +50,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c320e4ede7621f41b1e88234ebd8b84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  accentColor: {r: 1, g: 0, b: 0, a: 1}
+  _accentColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!222 &7687888926109307842
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -200,16 +200,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4dc5b96dc51fb94b959bcccebbecb64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  onTabEnter:
+  _onTabEnter:
     m_PersistentCalls:
       m_Calls: []
-  onTabExit:
+  _onTabExit:
     m_PersistentCalls:
       m_Calls: []
-  onTabSelected:
+  _onTabSelected:
     m_PersistentCalls:
       m_Calls: []
-  onTabDeselected:
+  _onTabDeselected:
     m_PersistentCalls:
       m_Calls: []
 --- !u!222 &7687888926156942184
@@ -344,7 +344,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c320e4ede7621f41b1e88234ebd8b84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  accentColor: {r: 1, g: 0, b: 0, a: 1}
+  _accentColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!222 &7687888926761520992
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -560,7 +560,7 @@ GameObject:
   - component: {fileID: 7687888927102075993}
   - component: {fileID: 7687888927102075990}
   m_Layer: 5
-  m_Name: GameOptionsMenu
+  m_Name: GameOptionsPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -649,7 +649,7 @@ GameObject:
   - component: {fileID: 7687888927130497637}
   - component: {fileID: 7687888927130497634}
   m_Layer: 5
-  m_Name: OptionsMenu
+  m_Name: OptionsPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -700,18 +700,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3080afa3dab31847a33dc6b19e31323, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tabButtons:
+  _tabButtons:
   - {fileID: 7687888926156942187}
   - {fileID: 7687888927367387890}
   - {fileID: 7687888927513582637}
-  menuesToSwap:
+  _panelsToSwap:
   - {fileID: 3191821410933788252}
   - {fileID: 3072743027337699357}
   - {fileID: 2395389172083566050}
-  tabIdleColor: {r: 0.43529412, g: 0.43529412, b: 0.43529412, a: 1}
-  tabActiveColor: {r: 0.6509804, g: 0.6509804, b: 0.6509804, a: 1}
-  isUsingKeyboard: 1
-  isCanBeInactive: 0
+  _tabIdleColor: {r: 1, g: 1, b: 1, a: 1}
+  _tabActiveColor: {r: 1, g: 0, b: 0, a: 1}
+  _isUsingKeyboard: 1
+  _isCanBeInactive: 0
 --- !u!222 &7687888927130497637
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -760,7 +760,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7687888927278579727}
   m_Layer: 5
-  m_Name: SubMenues
+  m_Name: SubPanels
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -801,7 +801,7 @@ GameObject:
   - component: {fileID: 7687888927348290152}
   - component: {fileID: 7687888927348290153}
   m_Layer: 5
-  m_Name: VideoOptionsMenu
+  m_Name: VideoOptionsPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -928,16 +928,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4dc5b96dc51fb94b959bcccebbecb64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  onTabEnter:
+  _onTabEnter:
     m_PersistentCalls:
       m_Calls: []
-  onTabExit:
+  _onTabExit:
     m_PersistentCalls:
       m_Calls: []
-  onTabSelected:
+  _onTabSelected:
     m_PersistentCalls:
       m_Calls: []
-  onTabDeselected:
+  _onTabDeselected:
     m_PersistentCalls:
       m_Calls: []
 --- !u!222 &7687888927367387891
@@ -1074,16 +1074,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4dc5b96dc51fb94b959bcccebbecb64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  onTabEnter:
+  _onTabEnter:
     m_PersistentCalls:
       m_Calls: []
-  onTabExit:
+  _onTabExit:
     m_PersistentCalls:
       m_Calls: []
-  onTabSelected:
+  _onTabSelected:
     m_PersistentCalls:
       m_Calls: []
-  onTabDeselected:
+  _onTabDeselected:
     m_PersistentCalls:
       m_Calls: []
 --- !u!222 &7687888927513582634
@@ -1218,7 +1218,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c320e4ede7621f41b1e88234ebd8b84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  accentColor: {r: 1, g: 0, b: 0, a: 1}
+  _accentColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!222 &7687888928095722566
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1329,7 +1329,7 @@ GameObject:
   - component: {fileID: 7687888928163392169}
   - component: {fileID: 7687888928163392166}
   m_Layer: 5
-  m_Name: ControlOptionsMenu
+  m_Name: ControlOptionsPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

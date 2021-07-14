@@ -9,18 +9,17 @@ namespace FD.UI
     [DisallowMultipleComponent]
     public class HighlightedText : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
-        [SerializeField] Color accentColor = Color.red;
+        [SerializeField] Color _accentColor = Color.red;
 
-        private Color defaultTextColor;
-
-        private TMP_Text textComponent;
+        private Color _defaultTextColor;
+        private TMP_Text _textComponent;
 
         private void Awake()
         {
-            if (TryGetComponent(out textComponent) == false)
+            if (TryGetComponent(out _textComponent) == false)
                 Destroy(gameObject);
 
-            defaultTextColor = textComponent.color;
+            _defaultTextColor = _textComponent.color;
         }
 
         public void OnPointerEnter(PointerEventData eventData)
@@ -35,12 +34,12 @@ namespace FD.UI
 
         private void SetAccentColor()
         {
-            textComponent.color = accentColor;
+            _textComponent.color = _accentColor;
         }
 
         private void SetDefaultColor()
         {
-            textComponent.color = defaultTextColor;
+            _textComponent.color = _defaultTextColor;
         }
     }
 }

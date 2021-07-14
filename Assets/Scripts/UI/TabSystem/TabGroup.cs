@@ -4,53 +4,53 @@ using UnityEngine;
 namespace FD.UI.TabSystem
 {
     using Input;
-    using Menues;
+    using Panels;
 
     public class TabGroup : MonoBehaviour
     {
-        [SerializeField] TabButton[] tabButtons = null;
-        [SerializeField] Menu[] menuesToSwap = null;
+        [SerializeField] private TabButton[] _tabButtons = null;
+        [SerializeField] private Panel[] _panelsToSwap = null;
 
-        [SerializeField] Color tabIdleColor = Color.white;
-        [SerializeField] Color tabActiveColor = Color.red;
+        [SerializeField] private Color _tabIdleColor = Color.white;
+        [SerializeField] private Color _tabActiveColor = Color.red;
 
-        [SerializeField] bool isUsingKeyboard = false;
-        [SerializeField] bool isCanBeInactive = false;
+        [SerializeField] private bool _isUsingKeyboard;
+        [SerializeField] private bool _isCanBeInactive;
 
-        public Color TabIdleColor => tabIdleColor;
-        public Color TabActiveColor => tabActiveColor;
+        public Color TabIdleColor => _tabIdleColor;
+        public Color TabActiveColor => _tabActiveColor;
 
-        private TabButton activeTab;
-        private TabButton lastSelectedTab;
+        private TabButton _activeTab;
+        private TabButton _lastSelectedTab;
 
-        private MenuController menuController;
+        private IPanelController _panelController;
 
         private void Awake()
         {
-            menuController = FindObjectOfType<MenuController>();
-            menuController.MenuClosed += OnMenuClosed;
+            _panelController = FindObjectsOfType<MonoBehaviour>().OfType<IPanelController>().First();
+            _panelController.PanelClosed += OnPanelClosed;
 
-            for (var i = 0; i < tabButtons.Length; i++)
+            for (var i = 0; i < _tabButtons.Length; i++)
             {
-                tabButtons[i].Init(this, i);
+                _tabButtons[i].Init(this, i);
             }
         }
 
         private void Start()
         {
-            if (isCanBeInactive == false)
-                OnTabSelected(tabButtons[0]);
+            if (_isCanBeInactive == false)
+                OnTabSelected(_tabButtons[0]);
         }
 
         private void OnEnable()
         {
-            if (isUsingKeyboard == false)
+            if (_isUsingKeyboard == false)
                 return;
-
-            if (isCanBeInactive == false && activeTab == null)
+            
+            if (_isCanBeInactive == false && _activeTab == null)
             {
-                if (lastSelectedTab)
-                    OnTabSelected(lastSelectedTab);
+                if (_lastSelectedTab)
+                    OnTabSelected(_lastSelectedTab);
                 else
                     ShowNextTab();
             }
@@ -61,7 +61,7 @@ namespace FD.UI.TabSystem
 
         private void OnDisable()
         {
-            if (isUsingKeyboard == false)
+            if (_isUsingKeyboard == false)
                 return;
 
             InputManager.Controls.UI.PreviousTab.performed -= context => ShowPreviousTab();
@@ -70,33 +70,33 @@ namespace FD.UI.TabSystem
 
         public void OnTabSelected(TabButton button)
         {
-            if (activeTab)
-                activeTab.Deselect();
+            if (_activeTab)
+                _activeTab.Deselect();
 
             if (button == null)
                 return;
 
-            int index = button.Index;
+            var index = button.Index;
 
-            if (activeTab == button && isCanBeInactive)
+            if (_activeTab == button && _isCanBeInactive)
             {
-                activeTab = null;
+                _activeTab = null;
                 button.Deselect();
 
-                menuesToSwap[index].Close();
+                _panelsToSwap[index].Close();
             }
             else
             {
-                activeTab = button;
-                activeTab.Select();
-                lastSelectedTab = activeTab;
+                _activeTab = button;
+                _activeTab.Select();
+                _lastSelectedTab = _activeTab;
 
-                for (int i = 0; i < menuesToSwap.Length; i++)
+                for (var i = 0; i < _panelsToSwap.Length; i++)
                 {
                     if (i == index)
-                        menuesToSwap[i].Open();
+                        _panelsToSwap[i].Open();
                     else
-                        menuesToSwap[i].Close();
+                        _panelsToSwap[i].Close();
                 }
             }
 
@@ -105,55 +105,61 @@ namespace FD.UI.TabSystem
 
         public void ShowNextTab()
         {
-            if (tabButtons.Length < 0)
+            if (_tabButtons.Length < 1)
                 return;
 
             int newIndex;
 
-            if (activeTab == null)
+            if (_activeTab == null)
                 newIndex = 0;
             else
-                newIndex = activeTab.Index + 1;
+                newIndex = _activeTab.Index + 1;
 
-            if (newIndex >= tabButtons.Length)
+            if (newIndex >= _tabButtons.Length)
                 newIndex = 0;
 
-            OnTabSelected(tabButtons[newIndex]);
+            OnTabSelected(_tabButtons[newIndex]);
         }
 
         public void ShowPreviousTab()
         {
-            if (tabButtons.Length < 0)
+            if (_tabButtons.Length < 1)
                 return;
 
-            int newIndex = activeTab.Index - 1;
+            var newIndex = _activeTab.Index - 1;
 
             if (newIndex < 0)
-                newIndex = tabButtons.Length - 1;
+                newIndex = _tabButtons.Length - 1;
 
-            OnTabSelected(tabButtons[newIndex]);
+            OnTabSelected(_tabButtons[newIndex]);
         }
 
-        public void ResetTabs()
+        public void Init(TabButton[] buttons, Panel[] panels)
         {
-            foreach (var button in tabButtons.Where(button => activeTab == null || button != activeTab))
+            _tabButtons = buttons;
+            _panelsToSwap = panels;
+        }
+        
+        private void ResetTabs()
+        {
+            foreach (TabButton button in _tabButtons.Where(button => _activeTab == null || button != _activeTab))
             {
                 button.Deselect();
             }
         }
 
-        private void OnMenuClosed(Menu menu)
+        private void OnPanelClosed(Panel panel)
         {
-            if (activeTab == null)
+            if (_activeTab == null)
                 return;
 
-            var closedMenu = menuesToSwap[activeTab.Index];
+            var closedPanel = _panelsToSwap[_activeTab.Index];
 
-            if (menu != closedMenu)
+            if (panel != closedPanel)
                 return;
 
-            activeTab.Deselect();
-            activeTab = null;
+            _activeTab.Deselect();
+            _activeTab = null;
         }
     }
 }

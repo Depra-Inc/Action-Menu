@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace FD.UI.Menues.Background
 {
@@ -7,14 +8,14 @@ namespace FD.UI.Menues.Background
     [DisallowMultipleComponent]
     internal class BackgroundController : MonoBehaviour
     {
-        [SerializeField] BackgroundType defaultType = BackgroundType.Sprite;
+        [SerializeField] private BackgroundType defaultType = BackgroundType.Sprite;
 
         public IBackground ActiveBackground { get; private set; }
 
         public Action BackgroundChanged { get; set; }
 
-        private IBackground[] backgrounds = null;
-        private int lastIndex;
+        private IBackground[] _backgrounds = null;
+        private int _lastIndex;
 
         private void Awake()
         {
@@ -34,7 +35,7 @@ namespace FD.UI.Menues.Background
 
         public void SetNext()
         {
-            var newIndex = IncreaseIndex(lastIndex);
+            var newIndex = IncreaseIndex(_lastIndex);
             ChangeTo(newIndex);
         }
 
@@ -51,11 +52,11 @@ namespace FD.UI.Menues.Background
 
         private bool ChangeTo(int index)
         {
-            if (index > backgrounds.Length || backgrounds[index] == null)
+            if (index > _backgrounds.Length || _backgrounds[index] == null)
                 return false;
 
-            SetBackground(backgrounds[index]);
-            lastIndex = index;
+            SetBackground(_backgrounds[index]);
+            _lastIndex = index;
 
             return true;
         }
@@ -90,8 +91,8 @@ namespace FD.UI.Menues.Background
 
         private bool TryGetBackgroundsInChildrens()
         {
-            backgrounds = GetComponentsInChildren<IBackground>(true);
-            if (backgrounds == null || backgrounds.Length == 0)
+            _backgrounds = GetComponentsInChildren<IBackground>(true);
+            if (_backgrounds == null || _backgrounds.Length == 0)
                 return false;
 
             return true;
@@ -104,11 +105,11 @@ namespace FD.UI.Menues.Background
             if (prefabs == null || prefabs.Length == 0)
                 return false;
 
-            backgrounds = new IBackground[prefabs.Length];
+            _backgrounds = new IBackground[prefabs.Length];
             for (var i = 0; i < prefabs.Length; i++)
             {
-                backgrounds[i] = Instantiate(prefabs[i], transform) as IBackground;
-                (backgrounds[i] as UnityEngine.Object).name = backgrounds[i].GetType().Name;
+                _backgrounds[i] = Instantiate(prefabs[i], transform) as IBackground;
+                ((Object) _backgrounds[i]).name = _backgrounds[i].GetType().Name;
             }
 
             return true;
@@ -118,12 +119,12 @@ namespace FD.UI.Menues.Background
         {
             IBackground result = null;
 
-            for (var index = 0; index < backgrounds.Length; index++)
+            for (var index = 0; index < _backgrounds.Length; index++)
             {
-                if (backgrounds[index].Type == type)
+                if (_backgrounds[index].Type == type)
                 {
-                    result = backgrounds[index];
-                    lastIndex = index;
+                    result = _backgrounds[index];
+                    _lastIndex = index;
 
                     break;
                 }
@@ -136,7 +137,7 @@ namespace FD.UI.Menues.Background
         {
             index++;
 
-            if (index >= backgrounds.Length)
+            if (index >= _backgrounds.Length)
                 index = 0;
 
             return index;

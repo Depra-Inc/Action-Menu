@@ -295,7 +295,7 @@ GameObject:
   - component: {fileID: 1221897767670636700}
   - component: {fileID: 1221897767670636701}
   m_Layer: 5
-  m_Name: ExitMenu
+  m_Name: ExitPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -335,8 +335,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 297e4342fd7d53f47a082602ef4e7aa4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  confirmButton: {fileID: 1221897768807303075}
-  cancelButton: {fileID: 1221897768590382603}
+  _confirmButton: {fileID: 1221897768807303075}
+  _cancelButton: {fileID: 1221897768590382603}
 --- !u!222 &1221897767670636700
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -1,38 +1,38 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace FD.UI.Menues
 {
     using Input;
+    using Panels;
 
     [AddComponentMenu("FD/UI/Menu/Menu Controller")]
     [DisallowMultipleComponent]
-    internal class MenuController : MonoBehaviour, IMenuController
+    internal class MenuController : MonoBehaviour, IMenuController, IPanelController
     {
-        [SerializeField] Transform menuesRoot = null;
+        [SerializeField] private Transform _panelsRoot = null;
 
-        public Menu[] Menues => menues.Values.ToArray();
+        public Panel[] Panels => _panels.ToArray();
 
-        public Action GameStarted { get; set; }
-        public Action GameEnded { get; set; }
-        public Action<Menu> MenuOpened { get; set; }
-        public Action<Menu> MenuClosed { get; set; }
+        public Action<Panel> PanelOpened { get; set; }
+        public Action<Panel> PanelClosed { get; set; }
 
-        private Stack<Menu> menuStack = new Stack<Menu>();
-        private Dictionary<int, Menu> menues = new Dictionary<int, Menu>();
+        private readonly Stack<Panel> _panelStack = new Stack<Panel>();
+        private readonly List<Panel> _panels = new List<Panel>();
 
         private void Awake()
         {
             InputManager.Add(ActionMapNames.UI);
             InputManager.Controls.UI.Enable();
 
-            InitMenues();
-            OpenMenu(MenuType.Main);
+            if (_panelsRoot == null)
+                _panelsRoot = transform;
+            
+            InitPanels();
 
-            MenuOpened += OnMenuOpened;
-            MenuClosed += OnMenuClosed;
+            PanelOpened += OnPanelOpened;
+            PanelClosed += OnPanelClosed;
         }
 
         private void OnDestroy()
@@ -42,140 +42,113 @@ namespace FD.UI.Menues
 
         private void OnEnable()
         {
-            InputManager.Controls.UI.CloseLast.performed += context => CloseLastMenu();
+            InputManager.Controls.UI.CloseLast.performed += context => CloseLastPanel();
         }
 
         private void OnDisable()
         {
-            InputManager.Controls.UI.CloseLast.performed -= context => CloseLastMenu();
+            InputManager.Controls.UI.CloseLast.performed -= context => CloseLastPanel();
         }
 
-        public void OpenMenu(MenuType type)
+        public void OnPanelOpened(Panel panel)
         {
-            OpenMenu(GetMenu(type));
+            _panelStack.Push(panel);
         }
 
-        public void OpenMenu(Menu menu)
+        public void OnPanelClosed(Panel panel)
         {
-            if (menu == null)
+            if (_panelStack.Count == 0)
                 return;
 
-            menu.Open();
+            _panelStack.Pop();
         }
 
-        public void OnMenuOpened(Menu menu)
+        public void OpenPanel(Panel panel)
         {
-            menuStack.Push(menu);
-        }
-
-        public void OnMenuClosed(Menu menu)
-        {
-            if (menuStack.Count == 0)
+            if (panel == null)
                 return;
 
-            menuStack.Pop();
+            panel.Open();
         }
-
-        public void ToggleMenu(Menu menu)
+        
+        public void CloseLastPanel()
         {
-            if (menu == null)
+            if (_panelStack.Count == 0)
                 return;
 
-            menu.Toggle();
-        }
-
-        public void CloseLastMenu()
-        {
-            if (menuStack.Count == 0)
+            var lastPanel = _panelStack.Peek();
+            if (lastPanel is MainTabPanel)
                 return;
 
-            var lastMenu = menuStack.Peek();
-            if (lastMenu is MainMenu)
+            lastPanel.Close();
+
+            var parentPanel = lastPanel.GetComponentInParent<Panel>();
+            if (parentPanel)
+                parentPanel.Close();
+        }
+
+        public void ClosePanel(Panel panel)
+        {
+            if (panel == null)
                 return;
 
-            lastMenu.Close();
+            panel.Close();
 
-            var parentMenu = lastMenu.GetComponentInParent<Menu>();
-            if (parentMenu)
-                parentMenu.Close();
+            var lastMenu = _panelStack.Peek();
+            if (panel == lastMenu)
+                _panelStack.Pop();
         }
 
-        public void CloseMenu(Menu menu)
+        private void InitPanels()
         {
-            if (menu == null)
-                return;
+            _panels.Clear();
 
-            menu.Close();
-
-            var lastMenu = menuStack.Peek();
-            if (menu == lastMenu)
-                menuStack.Pop();
-        }
-
-        private Menu GetMenu(MenuType type)
-        {
-            var index = (int)type;
-            if (menues.ContainsKey(index))
-            {
-                if (menues.TryGetValue(index, out Menu result))
-                    return result;
-            }
-
-            Debug.Log($"[{nameof(MenuController)}]: {type} Menu not found!");
-
-            return null;
-        }
-
-        private void InitMenues()
-        {
-            menues.Clear();
-
-            if (InitMenuesFromRoot() == false)
+            if (InitPanelsFromRoot() == false)
             {
                 Debug.Log($"[{nameof(MenuController)}]: Trying to load menu prefabs from resources.");
 
-                InitMenuesFromResources();
+                InitPanelsFromResources();
             }
         }
 
-        private void InitMenuesFromResources()
+        private void InitPanelsFromResources()
         {
-            var menuPrefabs = Resources.LoadAll<Menu>("Prefabs/UI/Menues");
+            var panelPrefabs = Resources.LoadAll<Panel>("Prefabs/UI/Menues");
 
-            if (menuPrefabs == null)
+            if (panelPrefabs == null)
             {
                 Debug.Log($"[{nameof(MenuController)}]: Menu prefabs not found!");
                 return;
             }
 
-            var result = new List<Menu>();
-            for (var i = 0; i < menuPrefabs.Length; i++)
+            var result = new List<Panel>();
+            foreach (var panelPrefab in panelPrefabs)
             {
-                var menu = Instantiate(menuPrefabs[i], menuesRoot);
-                menu.gameObject.SetActive(false);
-                menu.name = menu.GetType().Name;
-                menu.Init(this);
+                var panel = Instantiate(panelPrefab, _panelsRoot);
+                panel.gameObject.SetActive(false);
+                panel.name = panel.GetType().Name;
+                panel.Init(this);
 
-                menues.Add((int)menu.Type, menu);
+                _panels.Add(panel);
             }
         }
 
-        private bool InitMenuesFromRoot()
+        private bool InitPanelsFromRoot()
         {
-            var menuComponents = menuesRoot.GetComponentsInChildren<Menu>(true);
+            var panelComponents = _panelsRoot.GetComponentsInChildren<Panel>(true);
 
-            if (menuComponents == null || menuComponents.Length == 0)
+            if (panelComponents == null || panelComponents.Length == 0)
             {
                 Debug.Log($"[{nameof(MenuController)}]: No menu found in root!");
                 return false;
             }
 
-            foreach (Menu menu in menuComponents)
+            foreach (Panel panel in panelComponents)
             {
-                menu.gameObject.SetActive(false);
-                menu.Init(this);
+                panel.gameObject.SetActive(false);
+                panel.Init(this);
 
-                menues.Add((int)menu.Type, menu);
+                _panels.Add(panel);
             }
 
             return true;
