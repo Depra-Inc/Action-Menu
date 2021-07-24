@@ -1,11 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
+using FD.UI.Menues.Background;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace FD.UI.Panels
 {
     internal class OptionsPanel : Panel
     {
-        
+
     }
 }

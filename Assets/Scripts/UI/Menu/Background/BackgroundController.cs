@@ -8,7 +8,7 @@ namespace FD.UI.Menues.Background
     [DisallowMultipleComponent]
     internal class BackgroundController : MonoBehaviour
     {
-        [SerializeField] private BackgroundType defaultType = BackgroundType.Sprite;
+        [SerializeField] private BackgroundType _defaultType = BackgroundType.Sprite;
 
         public IBackground ActiveBackground { get; private set; }
 
@@ -20,7 +20,7 @@ namespace FD.UI.Menues.Background
         private void Awake()
         {
             Init();
-            ChangeTypeTo(defaultType);
+            ChangeTypeTo(_defaultType);
         }
 
         private void OnEnable()
